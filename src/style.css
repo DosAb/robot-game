@@ -1,0 +1,28 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Playfair+Display&display=swap');
+
+
+html,
+body
+{
+    scroll-behavior: smooth;
+    /* overflow: hidden; */
+    color: white;
+    background-color: rgb(62, 20, 20);
+}
+
+.webgl
+{
+    position: fixed;
+    /* background-color: transparent; */
+    /* z-index: 1; */
+    width: 100vw;
+    height: 100vh;
+    /* cursor: grab; */
+}
+

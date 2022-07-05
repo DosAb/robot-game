@@ -1,4 +1,4 @@
-# Katana
+# Robot
 
 ## Setup
 

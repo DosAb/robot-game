@@ -58,7 +58,7 @@ export default class renderer
         this.instance.physicallyCorrectLights = true
         this.instance.gammaOutPut = true
         this.instance.outputEncoding = THREE.sRGBEncoding
-        this.instance.shadowMap.enabled = true
+        this.instance.shadowMap.enabled = false
         this.instance.shadowMap.type = THREE.PCFSoftShadowMap
         this.instance.toneMapping = THREE.NoToneMapping
         // this.instance.toneMappingExposure = 1
@@ -85,9 +85,9 @@ export default class renderer
         this.postProcess.finalPass = new ShaderPass({
             uniforms:{
                 tDiffuse: {value: null},
-                redMultiplier: {value: 1},
-                greenMultiplier: {value: 0.6},
-                blueMultiplier: {value: 1.5},
+                redMultiplier: {value: 0.4},
+                greenMultiplier: {value: 1.4},
+                blueMultiplier: {value: 1},
             },
             vertexShader: finalPassVertexShader,
             fragmentShader: finalPassFragmentShader
@@ -120,8 +120,8 @@ export default class renderer
         /**
          * Effect composer
          */
-        const RenderTargetClass = this.config.pixelRatio >= 2 ? THREE.WebGLRenderTarget : THREE.WebGLMultisampleRenderTarget
-        // const RenderTargetClass = THREE.WebGLRenderTarget
+        // const RenderTargetClass = this.config.pixelRatio >= 2 ? THREE.WebGLRenderTarget : THREE.WebGLMultisampleRenderTarget
+        const RenderTargetClass = THREE.WebGLRenderTarget
         this.renderTarget = new RenderTargetClass(
             this.config.width,
             this.config.height,
@@ -130,14 +130,14 @@ export default class renderer
                 minFilter: THREE.LinearFilter,
                 magFilter: THREE.LinearFilter,
                 format: THREE.RGBFormat,
-                encoding: THREE.sRGBEncoding
+                encoding: THREE.sRGBEncoding,
             }
         )
 
 
         this.postProcess.composer = new EffectComposer(this.instance, this.renderTarget)
         this.postProcess.composer.setSize(this.config.width, this.config.height)
-        this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
+        this.postProcess.composer.setPixelRatio(this.config.pixelRatio / this.config.pixelRatio)
 
         this.postProcess.composer.addPass(this.postProcess.renderPass)
         this.postProcess.composer.addPass(this.postProcess.finalPass)
@@ -170,7 +170,6 @@ export default class renderer
         {
             this.instance.render(this.scene, this.camera.instance)
         }
-        // this.instance.render(this.scene, this.camera.instance)
 
         if(this.stats)
         {

@@ -8,7 +8,7 @@ import Resources from './Resources.js'
 import Renderer from './Renderer.js'
 import Camera from './Camera.js'
 import World from './World.js'
-// import Keyboard from './Keyboard/Keyboard.js'
+import Presets from './Presets.js'
 
 import assets from './assets.js'
 
@@ -42,6 +42,7 @@ export default class Experience
         this.setRenderer()
         this.setResources()
         this.setWorld()
+        this.setPresets()
         
         this.sizes.on('resize', () =>
         {
@@ -51,11 +52,18 @@ export default class Experience
         this.update()
     }
 
+    setPresets()
+    {
+        this.presets = new Presets()
+    }
+
     setConfig()
     {
         this.config = {}
 
         //Debug
+        console.log(window.location)
+        window.location.hash = '#debug'
         this.config.debug = window.location.hash === '#debug'
 
         //PixelRatio 

@@ -20,7 +20,6 @@ export default class Stats
     activate()
     {
         this.active = true
-
         document.body.appendChild(this.instance.dom)
     }
 

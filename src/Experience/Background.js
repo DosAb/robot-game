@@ -29,15 +29,16 @@ export default class Background
     }
     setMaterila()
     {
-        this.colorA = '#13222c'
-        this.colorB = '#000000'
+        this.colorA = '#011019'
+        this.colorB = '#13222c'
 
         this.material = new THREE.ShaderMaterial({
+            precision: 'lowp',
             uniforms:{
                 uColorA: {value: new THREE.Color(this.colorA)},
                 uColorB: {value: new THREE.Color(this.colorB)},
-                uOffest: {value: 0.1},
-                uMultiplier: {value: 1.7},
+                uOffest: {value: 0.4},
+                uMultiplier: {value: 1.85},
             },
             depthWrite: false,
             depthTest: false,
@@ -53,6 +54,15 @@ export default class Background
             )
             .on('change', () =>{
                 this.material.uniforms.uColorA.value.set(this.colorA)
+            })
+        this.debugFolder
+            .addInput(
+                this,
+                'colorB',
+                {view: 'color'}
+            )
+            .on('change', () =>{
+                this.material.uniforms.uColorB.value.set(this.colorB)
             })
         this.debugFolder
             .addInput(

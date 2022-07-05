@@ -22,10 +22,10 @@ export default class Lights
     {
         // Setup
         this.pointLight = {}
-        this.pointLight.color = '#364f5f'
+        this.pointLight.color = '#ff272b'
 
         // Instance
-        this.pointLight.instance = new THREE.PointLight(0xffffff, 5, 0, 2)
+        this.pointLight.instance = new THREE.PointLight( this.pointLight.color, 50, 0, 2.5)
         this.pointLight.instance.position.y = 5
         this.pointLight.instance.position.z = 3.5
         // this.pointLight.instance.castShadow = true
@@ -76,7 +76,7 @@ export default class Lights
     setSpotLight()
     {
         this.spot = {}
-        this.spot.color = '#2c5d7c'
+        this.spot.color = '#c2a011'
 
         // Instance
         this.spot.instance = new THREE.SpotLight(0xffffff, 200, 0, 1, 1, 2)
@@ -107,7 +107,7 @@ export default class Lights
         debugFolder.addInput(
             this.spot.instance,
             'intensity',
-            {min: 0, max: 100}
+            {min: 0, max: 300}
         )
         debugFolder.addInput(
             this.spot.instance,

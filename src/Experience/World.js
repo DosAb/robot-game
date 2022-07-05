@@ -12,6 +12,7 @@ export default class World
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
+        this.time = this.experience.time
 
         this.resources.on('groupEnd', (_group) =>{
             if(_group.name === 'base')
@@ -52,11 +53,7 @@ export default class World
             this.mecha.update()
         }
         if(this.lights){
-            // this.lights.spot.instance.lookAt(this.mecha.robot.bodies.objects[0].position)
-            this.lights.spot.instance.target = this.mecha.robot.bodies.objects[0]
-            this.lights.pointLight.instance.target = this.mecha.robot.bodies.objects[0]
-            // this.lights.spot.instance.updateWorldMatrix()
-            // console.log(this.mecha.robot.bodies.objects[0].position)
+            this.lights.spot.instance.position.y = Math.abs(Math.sin(this.time.elapsed * 0.0005) * 3)
         }
     }
 

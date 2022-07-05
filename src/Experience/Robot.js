@@ -1,6 +1,8 @@
 import * as THREE from 'three'
+import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry';
 import Experience from './Experience.js'
 import Keyboard from './Keyboard/Keyboard.js'
+
 
 export default class Robot
 {
@@ -27,8 +29,7 @@ export default class Robot
         this.setRobot()
         this.setShadow()
         this.setMuzzleFlash()
-        this.updateFloor()
-       
+        this.setRaycaster()       
     }
 
 
@@ -85,18 +86,6 @@ export default class Robot
         this.robot.speed = 1
         this.robot.parts = [
             {
-                regex: /^shoulder/, 
-                name: 'shoulders', 
-                axys: 'x',
-                objects: [],
-                default: -Math.PI * 0.25,
-                value: 0,
-                easedValue: 0,
-                easingMultiplier: 0.02,
-                min: - Infinity,
-                max: Infinity,
-            },
-            {
                 regex: /^head/, 
                 name: 'heads', 
                 axys: 'y',
@@ -107,17 +96,7 @@ export default class Robot
                 min: - Infinity,
                 max:  Infinity,
             },
-            {
-                regex: /^upperArm/, 
-                name: 'upperArms', 
-                axys: 'z',
-                objects: [],
-                value: 0,
-                easedValue: 0,
-                easingMultiplier: 0.02,
-                min: - Infinity,
-                max:  Infinity,
-            },
+
             {
                 regex: /^body/, 
                 name: 'bodies', 
@@ -169,7 +148,6 @@ export default class Robot
                     if(_child.name.match('Plane'))
                     {
                         _child.material = this.basicMaterial
-                        // console.log(_child)
                     }
                     // _child.receiveShadow = true
                     // _child.castShadow = true
@@ -186,21 +164,13 @@ export default class Robot
         this.floor = {}
 
         this.robot.floor = this.robot.model.getObjectByName('floor')
-        this.robot.floor.castShadow = false
         this.robot.floor.material = new THREE.MeshPhongMaterial({})
         this.floor.clone = this.robot.floor.clone()
-        // this.floor.clone.position.z -= 239
         this.floor.clone.position.y -= 2
         this.scene.add(this.floor.clone)
-        // this.floor.clone.scale.setScalar(500)
-
-
-
 
         //Body
         this.robot.body = this.robot.model.getObjectByName('body')
-
-       
 
         //ADD to Scene
         this.robot.model.position.set(0, -2, 0)
@@ -212,25 +182,12 @@ export default class Robot
         // console.log(this.robot.bod)
     }
 
-    updateFloor()
-    {
-        if(Math.abs(this.robot.bodies.objects[0].position.z % 240) > 239 )
-        {   
-            // console.log('more', (this.robot.bodies.objects[0].position.z))
-            // this.robot.floor.position.z = this.robot.bodies.objects[0].position.z
-            // console.log(this.robot.floor.position.z)
-        }
-    }
-
     setShadow()
     {
                 //Shadow
         this.robot.shadow = {}
         this.robot.shadow.texture = this.resources.items.shadow
         this.robot.shadow.texture.flipY = false
-        this.robot.shadow.texture.wrapS = THREE.RepeatWrapping;
-        this.robot.shadow.texture.wrapT = THREE.RepeatWrapping;
-        this.robot.shadow.texture.magFilter = THREE.NearestFilter;
         this.robot.shadow.mesh = this.robot.model.getObjectByName('shadowPlane')
         this.robot.shadow.mesh.material = new THREE.MeshLambertMaterial({
             transparent: true,
@@ -277,66 +234,120 @@ export default class Robot
         this.muzzleFlashStraight.material = muzzleFlashMaterialStarght
         this.muzzleFlashStraight2.material = muzzleFlashMaterialStarght
         this.muzzleFlash2.material = muzzleFlashMaterial
-
-        //Shadows
-        this.muzzleFlash.castShadow = false
-        this.muzzleFlash.receiveShadow = false
-        this.muzzleFlash2.castShadow = false
-        this.muzzleFlash2.receiveShadow = false
-        this.muzzleFlashStraight.castShadow = false
-        this.muzzleFlashStraight.receiveShadow = false
-        this.muzzleFlashStraight2.castShadow = false
-        this.muzzleFlashStraight2.receiveShadow = false
         
         //Turel Lights
         this.muzzleLight = this.robot.model.getObjectByName('muzzleLight').children[0]
         this.muzzleLight2 = this.robot.model.getObjectByName('muzzleLight2').children[0]
         this.muzzleLight.intensity = 0
         this.muzzleLight2.intensity = 0
-        this.muzzleLight.castShadow = false
-        this.muzzleLight2.castShadow = false
+    }
+
+    setRaycaster()
+    {
+
+        this.shootVector2 = new THREE.Vector3()
+        this.shootVector4 = new THREE.Vector3()
+
+        // this.robot.shoot = this.robot.model.getObjectByName('shoot1')
+        this.robot.shoot2 = this.robot.model.getObjectByName('shoot2')
+        
+            //Shootvector
+        this.shootVector2.set(this.robot.shoot2.position.x, this.robot.shoot2.position.y - 2, this.robot.shoot2.position.z + 2.5)
+        this.shootVector4.set(this.robot.shoot2.position.x, this.robot.shoot2.position.y - 2, this.robot.shoot2.position.z)
+
+        this.axis = this.robot.model.position.clone().normalize()
+
+        //Raycasters
+        this.robot.raycaster = {}
+        this.robot.raycaster.ray1 = new THREE.Raycaster()
+
+        this.robot.raycaster.texture = this.resources.items.bulletHole
+        this.robot.raycaster.texture.flipY = false
+        this.robot.raycaster.decalMaterial = new THREE.MeshBasicMaterial({
+            depthTest: true,
+            depthWrite: false,
+            polygonOffset: true,
+            polygonOffsetFactor: -4,
+            map: this.robot.raycaster.texture,
+            alphaMap: this.robot.raycaster.texture,
+            transparent: true
+        })
+
+        this.robot.raycaster.rayOrigin = this.shootVector2
+        this.robot.raycaster.rayDirection = this.shootVector4.clone()
+        this.robot.raycaster.rayDirection.normalize()
+
+        this.robot.raycaster.ray1.set(this.robot.raycaster.rayOrigin, this.robot.raycaster.rayDirection)
+        this.robot.raycaster.intersect = this.robot.raycaster.ray1.intersectObject(this.robot.floor)
+        console.log( this.robot.raycaster.intersect)
+
+    }
+
+    updateRaycaster()
+    {
+        this.robot.raycaster.rayOrigin = this.shootVector2
+        this.robot.raycaster.rayDirection = this.shootVector4.clone()
+        this.robot.raycaster.rayDirection.normalize()
+
+        this.robot.raycaster.ray1.set(this.robot.raycaster.rayOrigin, this.robot.raycaster.rayDirection)
+        this.robot.raycaster.intersect = this.robot.raycaster.ray1.intersectObject(this.robot.floor)
+
+        if(this.robot.raycaster.intersect.length === 0){
+            // console.log(0)
+        }else
+        {
+            
+            this.robot.raycaster.hitPosition = this.robot.raycaster.intersect[0].point.clone()
+            this.robot.raycaster.eye = this.robot.raycaster.hitPosition.clone()
+            this.robot.raycaster.eye.add( this.robot.raycaster.intersect[0].face.normal)
+    
+            this.robot.raycaster.rotation = new THREE.Matrix4()
+            this.robot.raycaster.rotation.lookAt(this.robot.raycaster.eye, this.robot.raycaster.hitPosition, THREE.Object3D.DefaultUp)
+            this.robot.raycaster.euler = new THREE.Euler()
+            this.robot.raycaster.euler.setFromRotationMatrix(this.robot.raycaster.rotation)
+            this.robot.raycaster.decalGeometry = new DecalGeometry(
+                this.robot.raycaster.intersect[0].object, this.robot.raycaster.intersect[0].point, this.robot.raycaster.euler, new THREE.Vector3(3 + Math.random(), 1 + Math.random(), 1 + Math.random())
+            )
+    
+            const decal = new THREE.Mesh(this.robot.raycaster.decalGeometry, this.robot.raycaster.decalMaterial)
+            this.scene.add(decal)
+            setTimeout(()=>{
+                this.robot.raycaster.decalGeometry.dispose()
+                this.scene.remove(decal)
+            }, 200)
+        }
     }
 
     update()
     {
         //Update Animation
+        
 
 
-        //Arms values
-        //Shoulder
-        if(this.keyPressed.arrowUp === true){
-            this.robot.shoulders.value += 0.005 * this.time.delta
-        }
-        if(this.keyPressed.arrowDown === true){
-            this.robot.shoulders.value -= 0.005 * this.time.delta
-        }
-        //Chest
+                //Head
         if(this.keyPressed.arrowRight === true){
-            this.robot.heads.value += 0.01
+            this.robot.heads.value -= 0.01
+            this.shootVector2.applyAxisAngle(this.axis, 0.01 * 5)
+            this.shootVector4.applyAxisAngle(this.axis, 0.01 * 5)
+
         }
         if(this.keyPressed.arrowLeft === true){
-            this.robot.heads.value -= 0.01
+            this.robot.heads.value += 0.01
+            this.shootVector2.applyAxisAngle(this.axis, -0.01 * 5)
+            this.shootVector4.applyAxisAngle(this.axis, -0.01 * 5)
         }
-        //UpperArm
-        if(this.keyPressed.bodyRotateRight === true){
-            this.robot.bodies.value += 0.0008 * this.time.delta
-            this.robot.mixer.update(this.time.delta * 0.0008)
-        }
-        if(this.keyPressed.bodyRotateLeft === true){
-            this.robot.bodies.value -= 0.0008 * this.time.delta
-            this.robot.mixer.update(this.time.delta * 0.0008)
-        }
+
         //Animate and move
         if(this.keyPressed.moveRobot === true){
-            // this.robot.elbows.value -= 0.005 * this.time.delta
             this.robot.mixer.update(this.time.delta * -0.001 * this.robot.speed)
             this.robot.bodies.position -= 0.005 * this.time.delta * this.robot.speed
+            
         }
         if(this.keyPressed.moveRobotBack === true){
             this.robot.mixer.update(this.time.delta * 0.001 * this.robot.speed)
             this.robot.bodies.position += 0.005 * this.time.delta * this.robot.speed
         }
-        // this.robot.bodies.objects[0].position.z = this.robot.bodies.position
+
         this.robot.floor.position.z = -this.robot.bodies.position % 240
         this.floor.clone.position.z = -this.robot.bodies.position % 240 - 239 
 
@@ -344,11 +355,12 @@ export default class Robot
 
         //Turel
         if(this.keyPressed.turelRotation === true){
+            this.updateRaycaster()
             this.robot.turels.value += 0.005 * this.time.delta
             this.muzzleFlash.material.opacity = 1
             this.muzzleFlashStraight.material.opacity = 1
-            this.muzzleLight.intensity = 5 - (Math.random()) * 2 
-            this.muzzleLight2.intensity = 5 - (Math.random()) * 2
+            this.muzzleLight.intensity = 30 - (Math.random()) * 2 
+            this.muzzleLight2.intensity = 30 - (Math.random()) * 2
             this.robot.heads.objects[0].position.z = Math.min(Math.max(this.robot.heads.objects[0].position.z + (Math.random()- 0.5) * 0.02, this.robot.heads.objects[0].position.z - 0.5), this.robot.heads.objects[0].position.z + 0.5)
         }else{
             this.muzzleFlash.material.opacity = 0
@@ -364,7 +376,6 @@ export default class Robot
             _part.value = Math.min(Math.max(this.robot[_part.name].value , this.robot[_part.name].min), this.robot[_part.name].max)
             _part.easedValue += (this.robot[_part.name].value - this.robot[_part.name].easedValue) * this.robot[_part.name].easingMultiplier * this.time.delta
         }
-        // this.robot.shoulders.easedValue += (this.robot.shoulders.value - this.robot.shoulders.easedValue) * 0.02 * this.time.delta
         //Shouders
         for(const _part of this.robot.parts)
         {
@@ -373,9 +384,6 @@ export default class Robot
             })
 
         }
-
-        this.updateFloor()
-
     }
 
 
@@ -431,12 +439,12 @@ export default class Robot
             }
         })
 
-        window.addEventListener('mousedown', ()=>{
-            // this.keyPressed.turelRotation = true
-        })
-        window.addEventListener('mouseup', ()=>{
-            // this.keyPressed.turelRotation = false
-        })
+        // window.addEventListener('mousedown', ()=>{
+        //     // this.keyPressed.turelRotation = true
+        // })
+        // window.addEventListener('mouseup', ()=>{
+        //     // this.keyPressed.turelRotation = false
+        // })
 
     }
 

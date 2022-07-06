@@ -4,7 +4,7 @@ import Experience from './Experience.js'
 import Robot from './Robot.js'
 import Lights from './Lights.js'
 import Background from './Background.js'
-import Sound from './Soun.js'
+import Sound from './Sound.js'
 
 export default class World
 {

@@ -80,6 +80,12 @@ module.exports = {
                 }
             },
 
+            //Sounds
+            {
+                test: /\.mp3$/,
+                loader: 'file-loader'
+            },
+
             // Fonts
             {
                 test: /\.(ttf|eot|woff|woff2)$/,

@@ -19,8 +19,6 @@ export default class Robot
             title: 'mecha',
             expanded: false,
         })
-
-        this.audio = document.querySelector('#audio')
        
         this.keyPressed = {}
 
@@ -345,12 +343,7 @@ export default class Robot
 
             this.robot.mixer.update(this.time.delta * -0.001 * this.robot.speed)
             this.robot.bodies.position -= 0.005 * this.time.delta * this.robot.speed
-            // this.audio.currentTime = 0.2;
-            this.audio.volume = 0.5
-            this.audio.play()
             
-        }else{
-
         }
         if(this.keyPressed.moveRobotBack === true){
             this.robot.mixer.update(this.time.delta * 0.001 * this.robot.speed)
@@ -440,10 +433,6 @@ export default class Robot
                 case 'KeyA': this.keyPressed.arrowLeft = false
                     break;
                 case 'KeyW': this.keyPressed.moveRobot = false
-                setTimeout(()=>{
-                    this.audio.volume = 0.2
-                    this.audio.pause()
-                }, 300)
                     break;
                 case 'KeyS': this.keyPressed.moveRobotBack = false
                     break;

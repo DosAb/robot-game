@@ -19,8 +19,9 @@ export default class Robot
             title: 'mecha',
             expanded: false,
         })
-        
-        
+
+        this.audio = document.querySelector('#audio')
+       
         this.keyPressed = {}
 
         // Debug
@@ -129,6 +130,7 @@ export default class Robot
 
         this.robot.model = this.resources.items.mecha.scene
         console.log(this.robot.model)
+        this.robot.planeArray = []
 
         //Animation
         this.robot.mixer = new THREE.AnimationMixer(this.robot.model)
@@ -148,6 +150,7 @@ export default class Robot
                     if(_child.name.match('Plane'))
                     {
                         _child.material = this.basicMaterial
+                        this.robot.planeArray.push( _child.material)
                     }
                     // _child.receiveShadow = true
                     // _child.castShadow = true
@@ -339,9 +342,15 @@ export default class Robot
 
         //Animate and move
         if(this.keyPressed.moveRobot === true){
+
             this.robot.mixer.update(this.time.delta * -0.001 * this.robot.speed)
             this.robot.bodies.position -= 0.005 * this.time.delta * this.robot.speed
+            // this.audio.currentTime = 0.2;
+            this.audio.volume = 0.5
+            this.audio.play()
             
+        }else{
+
         }
         if(this.keyPressed.moveRobotBack === true){
             this.robot.mixer.update(this.time.delta * 0.001 * this.robot.speed)
@@ -431,6 +440,10 @@ export default class Robot
                 case 'KeyA': this.keyPressed.arrowLeft = false
                     break;
                 case 'KeyW': this.keyPressed.moveRobot = false
+                setTimeout(()=>{
+                    this.audio.volume = 0.2
+                    this.audio.pause()
+                }, 300)
                     break;
                 case 'KeyS': this.keyPressed.moveRobotBack = false
                     break;

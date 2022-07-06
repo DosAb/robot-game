@@ -4,6 +4,7 @@ import Experience from './Experience.js'
 import Robot from './Robot.js'
 import Lights from './Lights.js'
 import Background from './Background.js'
+import Sound from './Soun.js'
 
 export default class World
 {
@@ -20,6 +21,7 @@ export default class World
                 this.setBackground()
                 this.setLights()
                 this.setRobot()
+                this.setSound()
             }
         })
     }
@@ -39,6 +41,10 @@ export default class World
     {
         this.lights = new Lights()
     }
+    setSound()
+    {
+        this.sound = new Sound()
+    }
 
 
 
@@ -54,6 +60,9 @@ export default class World
         }
         if(this.lights){
             this.lights.spot.instance.position.y = Math.abs(Math.sin(this.time.elapsed * 0.0005) * 3)
+        }
+        if(this.sound){
+            this.sound.update()
         }
     }
 

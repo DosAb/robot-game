@@ -42,13 +42,19 @@ export default class Robot
         video.loop = true
 
         const videoTexture = new THREE.VideoTexture( video )
-        videoTexture.minFilter = THREE.LinearFilter
-        videoTexture.magFilter = THREE.LinearFilter
+        // videoTexture.minFilter = THREE.LinearFilter
+        // videoTexture.magFilter = THREE.LinearFilter
+        videoTexture.encoding = THREE.sRGBEncoding;
         videoTexture.flipY = false
 
         this.videoMaterial = new THREE.MeshBasicMaterial({
             map: videoTexture
         })
+
+        for(let i = 0; i < 5; i++ )
+        {
+
+        }
     }
 
 
@@ -190,6 +196,9 @@ export default class Robot
         this.floor.clone = this.robot.floor.clone()
         this.floor.clone.position.y -= 2
         this.scene.add(this.floor.clone)
+        this.robot.planeArray.push(this.robot.floor, this.floor.clone)
+
+
 
         //VHS
         this.robot.vhs = this.robot.model.getObjectByName('vhs')
@@ -304,8 +313,7 @@ export default class Robot
         this.robot.raycaster.rayDirection.normalize()
 
         this.robot.raycaster.ray1.set(this.robot.raycaster.rayOrigin, this.robot.raycaster.rayDirection)
-        this.robot.raycaster.intersect = this.robot.raycaster.ray1.intersectObject(this.robot.floor)
-
+        this.robot.raycaster.intersect = this.robot.raycaster.ray1.intersectObjects(this.robot.planeArray)
     }
 
     updateRaycaster()
@@ -315,7 +323,7 @@ export default class Robot
         this.robot.raycaster.rayDirection.normalize()
 
         this.robot.raycaster.ray1.set(this.robot.raycaster.rayOrigin, this.robot.raycaster.rayDirection)
-        this.robot.raycaster.intersect = this.robot.raycaster.ray1.intersectObject(this.robot.floor)
+        this.robot.raycaster.intersect = this.robot.raycaster.ray1.intersectObjects(this.robot.planeArray)
 
         if(this.robot.raycaster.intersect.length === 0){
             // console.log(0)
@@ -324,7 +332,7 @@ export default class Robot
             
             this.robot.raycaster.hitPosition = this.robot.raycaster.intersect[0].point.clone()
             this.robot.raycaster.eye = this.robot.raycaster.hitPosition.clone()
-            this.robot.raycaster.eye.add( this.robot.raycaster.intersect[0].face.normal)
+            this.robot.raycaster.eye.add( this.robot.raycaster.intersect[this.robot.raycaster.intersect.length - 1].face.normal)
     
             this.robot.raycaster.rotation = new THREE.Matrix4()
             this.robot.raycaster.rotation.lookAt(this.robot.raycaster.eye, this.robot.raycaster.hitPosition, THREE.Object3D.DefaultUp)
@@ -333,6 +341,13 @@ export default class Robot
             this.robot.raycaster.decalGeometry = new DecalGeometry(
                 this.robot.raycaster.intersect[0].object, this.robot.raycaster.intersect[0].point, this.robot.raycaster.euler, new THREE.Vector3(3 + Math.random(), 1 + Math.random(), 1 + Math.random())
             )
+
+            if(this.robot.raycaster.intersect[0].object.name.match('Plane0'))
+            {
+                this.robot.raycaster.intersect[0].object.material.color = new THREE.Color('red')
+            }
+            
+            console.log(this.robot.raycaster.intersect[0])
     
             const decal = new THREE.Mesh(this.robot.raycaster.decalGeometry, this.robot.raycaster.decalMaterial)
             this.scene.add(decal)
@@ -367,7 +382,6 @@ export default class Robot
 
             this.robot.mixer.update(this.time.delta * -0.001 * this.robot.speed)
             this.robot.bodies.position -= 0.005 * this.time.delta * this.robot.speed
-            
         }
         if(this.keyPressed.moveRobotBack === true){
             this.robot.mixer.update(this.time.delta * 0.001 * this.robot.speed)
@@ -376,6 +390,7 @@ export default class Robot
 
         this.robot.floor.position.z = -this.robot.bodies.position % 240
         this.floor.clone.position.z = -this.robot.bodies.position % 240 - 240 
+
 
 
 

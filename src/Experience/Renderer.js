@@ -42,7 +42,11 @@ export default class renderer
         this.instance = new THREE.WebGLRenderer({
             alpha: false,
             antialias: false,
-            powerPreference: 'high-performance'
+            powerPreference: 'high-performance',
+            precision: 'lowp',
+            premultipliedAlpha: false,
+            stencil: false,
+            depth: false,
         })
         this.instance.sortObjects = false
 

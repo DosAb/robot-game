@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry';
 import Experience from './Experience.js'
 import Keyboard from './Keyboard/Keyboard.js'
+import destinolVideo from '../../static/assets/dest.mp4'
 
 
 export default class Robot
@@ -25,10 +26,29 @@ export default class Robot
         // Debug
         this.setKeyboard()
         this.setMaterial()
+        this.setVideos()
         this.setRobot()
         this.setShadow()
         this.setMuzzleFlash()
-        this.setRaycaster()       
+        this.setRaycaster()
+    }
+
+    
+    setVideos()
+    {
+
+        const video = document.querySelector('#video')
+        video.src = destinolVideo
+        video.loop = true
+
+        const videoTexture = new THREE.VideoTexture( video )
+        videoTexture.minFilter = THREE.LinearFilter
+        videoTexture.magFilter = THREE.LinearFilter
+        videoTexture.flipY = false
+
+        this.videoMaterial = new THREE.MeshBasicMaterial({
+            map: videoTexture
+        })
     }
 
 
@@ -127,7 +147,7 @@ export default class Robot
        
 
         this.robot.model = this.resources.items.mecha.scene
-        console.log(this.robot.model)
+        // console.log(this.robot.model)
         this.robot.planeArray = []
 
         //Animation
@@ -145,10 +165,11 @@ export default class Robot
                 {
                    
                     _child.material = this.material
-                    if(_child.name.match('Plane'))
+                    if(_child.name.match('Plane0'))
                     {
-                        _child.material = this.basicMaterial
-                        this.robot.planeArray.push( _child.material)
+                        _child.material = this.videoMaterial
+                        _child.rotation.x = Math.PI / 2
+                        this.robot.planeArray.push( _child)
                     }
                     // _child.receiveShadow = true
                     // _child.castShadow = true
@@ -169,6 +190,10 @@ export default class Robot
         this.floor.clone = this.robot.floor.clone()
         this.floor.clone.position.y -= 2
         this.scene.add(this.floor.clone)
+
+        //VHS
+        this.robot.vhs = this.robot.model.getObjectByName('vhs')
+
 
         //Body
         this.robot.body = this.robot.model.getObjectByName('body')
@@ -192,7 +217,7 @@ export default class Robot
         this.robot.shadow.mesh = this.robot.model.getObjectByName('shadowPlane')
         this.robot.shadow.mesh.material = new THREE.MeshLambertMaterial({
             transparent: true,
-            map: this.resources.items.shadow,
+            map: this.robot.shadow.texture,
             depthWrite: false,
             opacity: 0.6
         })
@@ -280,7 +305,6 @@ export default class Robot
 
         this.robot.raycaster.ray1.set(this.robot.raycaster.rayOrigin, this.robot.raycaster.rayDirection)
         this.robot.raycaster.intersect = this.robot.raycaster.ray1.intersectObject(this.robot.floor)
-        console.log( this.robot.raycaster.intersect)
 
     }
 
@@ -351,7 +375,7 @@ export default class Robot
         }
 
         this.robot.floor.position.z = -this.robot.bodies.position % 240
-        this.floor.clone.position.z = -this.robot.bodies.position % 240 - 239 
+        this.floor.clone.position.z = -this.robot.bodies.position % 240 - 240 
 
 
 
@@ -440,14 +464,6 @@ export default class Robot
                     break;
             }
         })
-
-        // window.addEventListener('mousedown', ()=>{
-        //     // this.keyPressed.turelRotation = true
-        // })
-        // window.addEventListener('mouseup', ()=>{
-        //     // this.keyPressed.turelRotation = false
-        // })
-
     }
 
 }

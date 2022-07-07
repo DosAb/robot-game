@@ -41,7 +41,8 @@ export default class renderer
         // Renderer
         this.instance = new THREE.WebGLRenderer({
             alpha: false,
-            antialias: true
+            antialias: false,
+            powerPreference: 'high-performance'
         })
         this.instance.sortObjects = false
 
@@ -59,7 +60,7 @@ export default class renderer
         this.instance.gammaOutPut = true
         this.instance.outputEncoding = THREE.sRGBEncoding
         this.instance.shadowMap.enabled = false
-        this.instance.shadowMap.type = THREE.PCFSoftShadowMap
+        // this.instance.shadowMap.type = THREE.PCFSoftShadowMap
         this.instance.toneMapping = THREE.NoToneMapping
         // this.instance.toneMappingExposure = 1
 
@@ -133,11 +134,13 @@ export default class renderer
                 encoding: THREE.sRGBEncoding,
             }
         )
+        
 
 
         this.postProcess.composer = new EffectComposer(this.instance, this.renderTarget)
         this.postProcess.composer.setSize(this.config.width, this.config.height)
-        this.postProcess.composer.setPixelRatio(this.config.pixelRatio / this.config.pixelRatio)
+        // this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
+        this.postProcess.composer.setPixelRatio(1)
 
         this.postProcess.composer.addPass(this.postProcess.renderPass)
         this.postProcess.composer.addPass(this.postProcess.finalPass)

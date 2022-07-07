@@ -10,7 +10,7 @@ module.exports = {
         filename: 'bundle.[contenthash].js',
         path: path.resolve(__dirname, '../public')
     },
-    devtool: 'source-map',
+    // devtool: 'source-map',
     plugins:
     [
         new CopyWebpackPlugin({
@@ -82,7 +82,7 @@ module.exports = {
 
             //Sounds
             {
-                test: /\.mp3$/,
+                test: /\.(mp3|mp4)$/,
                 loader: 'file-loader'
             },
 

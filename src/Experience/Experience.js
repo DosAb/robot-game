@@ -92,7 +92,7 @@ export default class Experience
     setScene()
     {
         this.scene = new THREE.Scene()
-        this.scene.fog = new THREE.Fog("#13222c", 20, 90)
+        this.scene.fog = new THREE.Fog("#13222c", 10, 100)
     }
 
     setCamera()
@@ -140,6 +140,7 @@ export default class Experience
 
     resize()
     {
+        console.log(this.renderer.instance.info.render.triangles)
         // Config
         const boundings = this.targetElement.getBoundingClientRect()
         this.config.width = boundings.width

@@ -12,7 +12,6 @@ export default class Background
         this.experience = new Experience()
         this.debug = this.experience.debug
         this.scene = this.experience.scene
-        this.time = this.experience.time
 
         this.debugFolder = this.debug.addFolder({
             title: 'background',

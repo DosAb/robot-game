@@ -15,14 +15,14 @@ void main()
     vec2 uv = vUv;
     float distanceToCenter = length(vUv -0.5);
 
-    uv.x += random2d(vUv) * (distanceToCenter * distanceToCenter) * 0.01;
-    uv.y += random2d(vUv) * (distanceToCenter * distanceToCenter) * 0.01;
+    uv.x += random2d(vUv) * (distanceToCenter * distanceToCenter) * 0.001;
+    uv.y += random2d(vUv) * (distanceToCenter * distanceToCenter) * 0.001;
 
     //RGB shift
 
 
     float red = texture2D(tDiffuse, uv + 0.0015).r;
-    float green = texture2D(tDiffuse, uv + 0.0015 ).g;
+    float green = texture2D(tDiffuse, uv).g;
     float blue = texture2D(tDiffuse, uv - 0.0015 ).b;
     
     // vec3 color = vec3(red * redMultiplier, green * greenMultiplier, blue * blueMultiplier);

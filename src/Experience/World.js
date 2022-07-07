@@ -58,9 +58,9 @@ export default class World
         if(this.mecha){
             this.mecha.update()
         }
-        if(this.lights){
-            this.lights.spot.instance.position.y = Math.abs(Math.sin(this.time.elapsed * 0.0005) * 3)
-        }
+        // if(this.lights){
+        //     this.lights.spot.instance.position.y = Math.abs(Math.sin(this.time.elapsed * 0.0005) * 3)
+        // }
         if(this.sound){
             this.sound.update()
         }

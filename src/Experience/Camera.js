@@ -16,7 +16,7 @@ export default class Camera
         this.scene = this.experience.scene
 
         // Set up
-        this.mode = 'debug' // default \ debug
+        this.mode = 'default' // default \ debug
 
         // Debug
         if(this.debug)
@@ -63,7 +63,7 @@ export default class Camera
         // Default
         this.modes.default = {}
         this.modes.default.instance = this.instance.clone()
-        this.modes.default.instance.position.set(0, 3, 7.5)
+        this.modes.default.instance.position.set(0, 4, 7.5)
         this.modes.default.instance.rotation.reorder('YXZ')
 
         // Debug
@@ -83,6 +83,7 @@ export default class Camera
 
         this.instance.position.copy(this.modes[this.mode].instance.position)
         this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
+        this.instance.lookAt(new THREE.Vector3(0, 2, -1))
     }
 
 

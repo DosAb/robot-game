@@ -42,6 +42,16 @@ export default class Sound
                     break;
                 case 'ShiftLeft': this.shoot = true
                     break;
+                case 'ArrowUp': this.moveRobot = true
+                    break;
+                case 'ArrowDown': this.moveRobot = true
+                    break;
+                case 'ArrowRight': this.rotateRobot = true
+                    break;
+                case 'ArrowLeft': this.rotateRobot = true
+                    break;
+                case 'ShiftRight': this.shoot = true
+                    break;
             }
         })
         this.keyboard.on('unpressed', (_name) =>{
@@ -59,6 +69,20 @@ export default class Sound
                         setTimeout(()=>{this.sfx.rotate.pause()}, 100)
                     break;
                 case 'ShiftLeft': this.shoot = false
+                    break;
+                case 'ArrowUp': this.moveRobot = false
+                        setTimeout(()=>{this.sfx.moveForward.pause()}, 150)
+                    break;
+                case 'ArrowDown': this.moveRobot = false
+                        setTimeout(()=>{this.sfx.moveForward.pause()}, 150)
+                    break;
+                case 'ArrowRight': this.rotateRobot = false
+                        setTimeout(()=>{this.sfx.rotate.pause()}, 100)
+                    break;
+                case 'ArrowLeft': this.rotateRobot = false
+                        setTimeout(()=>{this.sfx.rotate.pause()}, 100)
+                    break;
+                case 'ShiftRight': this.shoot = false
                     break;
 
             }

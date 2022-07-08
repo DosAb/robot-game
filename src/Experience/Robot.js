@@ -3,6 +3,11 @@ import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry';
 import Experience from './Experience.js'
 import Keyboard from './Keyboard/Keyboard.js'
 import destinolVideo from '../../static/assets/dest.mp4'
+import donut from '../../static/assets/donut.mp4'
+import building from '../../static/assets/building.mp4'
+import sea from '../../static/assets/sea.mp4'
+import galaxy from '../../static/assets/galaxy.mp4'
+import whale from '../../static/assets/whale.mp4'
 
 
 export default class Robot
@@ -37,23 +42,68 @@ export default class Robot
     setVideos()
     {
 
-        const video = document.querySelector('#video')
+        const video = document.querySelector('#video1')
         video.src = destinolVideo
-        video.loop = true
+        // this.loop = true
 
-        const videoTexture = new THREE.VideoTexture( video )
-        // videoTexture.minFilter = THREE.LinearFilter
-        // videoTexture.magFilter = THREE.LinearFilter
-        videoTexture.encoding = THREE.sRGBEncoding;
-        videoTexture.flipY = false
+
+        this.videosArray = [
+            {
+                element: document.querySelector('#video1'),
+                src: destinolVideo,
+                
+            },
+            {
+                element: document.querySelector('#video2'),
+                src: donut,
+                
+            },
+            {
+                element: document.querySelector('#video3'),
+                src: building,
+            },
+            {
+                element:  document.querySelector('#video4'),
+                src: whale,
+            },
+            {
+                element:  document.querySelector('#video5'),
+                src: sea,
+            },
+            {
+                element:  document.querySelector('#video6'),
+                src: galaxy,
+            },
+        ]
+
+        this.videosArray.forEach((video)=>{
+            video.element.src = video.src
+            video.texture = new THREE.VideoTexture(video.element)
+            video.texture.flipY = false
+            video.material = new THREE.MeshBasicMaterial({map: video.texture})
+        })
+
+        console.log(this.videosArray)
+
+        this.countPlanes = 0
+
+
+
+        this.videoTexture = new THREE.VideoTexture(video)
+        // videoTexture.encoding = THREE.sRGBEncoding;
+        this.videoTexture.flipY = false
 
         this.videoMaterial = new THREE.MeshBasicMaterial({
-            map: videoTexture
+            map: this.videoTexture
         })
+
+        this.videoMaterial.needsUpdate = true
+        this.videoTexture.needsUpdate = true
+        console.log(this.videoMaterial)
 
         for(let i = 0; i < 5; i++ )
         {
-
+            
         }
     }
 
@@ -173,9 +223,12 @@ export default class Robot
                     _child.material = this.material
                     if(_child.name.match('Plane0'))
                     {
-                        _child.material = this.videoMaterial
+                        this.countPlanes++
+                        _child.material = this.videosArray[this.countPlanes % 5].material
                         _child.rotation.x = Math.PI / 2
                         this.robot.planeArray.push( _child)
+
+
                     }
                     // _child.receiveShadow = true
                     // _child.castShadow = true
@@ -186,6 +239,8 @@ export default class Robot
                 }
             }
         })
+
+        console.log(this.countPlanes)
 
 
         //Floor
@@ -202,6 +257,9 @@ export default class Robot
 
         //VHS
         this.robot.vhs = this.robot.model.getObjectByName('vhs')
+        // this.robot.vhs.position.z += 200
+        this.robot.vhs.material = this.videoMaterial
+        this.scene.remove(this.robot.vhs)
 
 
         //Body
@@ -345,10 +403,12 @@ export default class Robot
             if(this.robot.raycaster.intersect[0].object.name.match('Plane0'))
             {
                 this.robot.raycaster.intersect[0].object.material.color = new THREE.Color('red')
+
+                setTimeout(()=>{
+                    this.robot.raycaster.intersect[0].object.material.color = new THREE.Color('white')
+                },10)
             }
-            
-            console.log(this.robot.raycaster.intersect[0])
-    
+                
             const decal = new THREE.Mesh(this.robot.raycaster.decalGeometry, this.robot.raycaster.decalMaterial)
             this.scene.add(decal)
             setTimeout(()=>{
@@ -454,6 +514,8 @@ export default class Robot
                     break;
                 case 'ShiftLeft': this.keyPressed.turelRotation = true
                     break;
+                case 'ShiftRight': this.keyPressed.turelRotation = true
+                    break;
             }
         })
 
@@ -471,11 +533,13 @@ export default class Robot
                     break;
                 case 'KeyA': this.keyPressed.arrowLeft = false
                     break;
-                case 'KeyW': this.keyPressed.moveRobot = false
+                case 'KeyW': setTimeout(()=>{this.keyPressed.moveRobot = false}, 100)
                     break;
-                case 'KeyS': this.keyPressed.moveRobotBack = false
+                case 'KeyS': setTimeout(()=>{this.keyPressed.moveRobotBack = false}, 100)
                     break;
                 case 'ShiftLeft': this.keyPressed.turelRotation = false
+                    break;
+                case 'ShiftRight': this.keyPressed.turelRotation = false
                     break;
             }
         })

@@ -11,11 +11,11 @@ export default class Sound
         this.sfx = {
             moveForward: new Howl({
                 src: sound,
-                volume: 0.7
+                volume: 0.3
             }),
             rotate: new Howl({
                 src: soundRotate,
-                volume: 0.2
+                volume: 0.1
             }),
             shoot: new Howl({
                 src: shootSound,
@@ -23,7 +23,6 @@ export default class Sound
             })
         }
 
-        this.soundId = this.sfx.moveForward.play()
         this.setKeyboard()
     }
 
@@ -48,10 +47,10 @@ export default class Sound
         this.keyboard.on('unpressed', (_name) =>{
             switch (_name) {
                 case 'KeyW': this.moveRobot = false
-                        setTimeout(()=>{this.sfx.moveForward.pause()}, 100)
+                        setTimeout(()=>{this.sfx.moveForward.pause()}, 150)
                     break;
                 case 'KeyS': this.moveRobot = false
-                        setTimeout(()=>{this.sfx.moveForward.pause()}, 100)
+                        setTimeout(()=>{this.sfx.moveForward.pause()}, 150)
                     break;
                 case 'KeyA': this.rotateRobot = false
                         setTimeout(()=>{this.sfx.rotate.pause()}, 100)
@@ -72,7 +71,7 @@ export default class Sound
             if(!this.sfx.moveForward.playing())
             {
                 this.sfx.moveForward.play()
-                this.sfx.moveForward.rate(1.2)
+                this.sfx.moveForward.rate(2)
             }
         }
         if(this.rotateRobot === true){

@@ -144,7 +144,7 @@ export default class renderer
         this.postProcess.composer = new EffectComposer(this.instance, this.renderTarget)
         this.postProcess.composer.setSize(this.config.width, this.config.height)
         // this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
-        this.postProcess.composer.setPixelRatio(1)
+        this.postProcess.composer.setPixelRatio(0.8)
 
         this.postProcess.composer.addPass(this.postProcess.renderPass)
         this.postProcess.composer.addPass(this.postProcess.finalPass)

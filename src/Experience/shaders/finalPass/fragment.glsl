@@ -13,17 +13,17 @@ float random2d(vec2 co){
 void main()
 {
     vec2 uv = vUv;
-    float distanceToCenter = length(vUv -0.5);
+    float distanceToCenter = length(vUv -0.8);
 
-    uv.x += random2d(vUv) * (distanceToCenter * distanceToCenter) * 0.001;
-    uv.y += random2d(vUv) * (distanceToCenter * distanceToCenter) * 0.001;
+    uv.x += random2d(vUv) * (distanceToCenter * distanceToCenter ) * 0.002;
+    uv.y += random2d(vUv) * (distanceToCenter * distanceToCenter ) * 0.002;
 
     //RGB shift
 
 
-    float red = texture2D(tDiffuse, uv + 0.0015).r;
+    float red = texture2D(tDiffuse, uv + 0.001).r;
     float green = texture2D(tDiffuse, uv).g;
-    float blue = texture2D(tDiffuse, uv - 0.0015 ).b;
+    float blue = texture2D(tDiffuse, uv - 0.001 ).b;
     
     // vec3 color = vec3(red * redMultiplier, green * greenMultiplier, blue * blueMultiplier);
     vec3 color = vec3(red, green, blue);

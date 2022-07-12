@@ -1,16 +1,36 @@
 import Experience from './Experience.js'
-import Keyboard from './Keyboard/Keyboard.js'
 
 export default class Presets
 {
     constructor()
     {
         this.experience = new Experience()
-        this.keyboard = new Keyboard()
         this.debug = this.experience.debug
+        this.keyboard = this.experience.keyboard
         this.scene = this.experience.scene
         this.resources = this.experience.resources
         this.world = this.experience.world
+
+        if(this.debug)
+        {
+            this.debugFolder = this.debug.addFolder({
+                title: 'fog',
+                expanded: false,
+            })
+
+            this.color = '#ffffff'
+
+            this.debugFolder
+                .addInput(
+                    this,
+                    'color',
+                    { view: 'color' }
+                )
+                .on('change', () =>
+                {
+                    this.scene.fog.color.set(this.color)
+                })
+        }
 
         this.ready = false
         this.resources.on('groupEnd', (_group) =>{
@@ -27,6 +47,10 @@ export default class Presets
                     break;    
                 case 'Digit2': this.apply(1)
                     break;    
+                case 'Digit3': this.apply(2)
+                    break;    
+                case 'Digit4': this.apply(3)
+                    break;    
             }
         })
 
@@ -37,6 +61,9 @@ export default class Presets
                 robotColor: '#ffffff',
                 robotRoughness: 0.55,
                 robotMetalness: 1,
+                wireframe: false,
+
+                floorColor: '#ffffff',
 
                 redPass: 1,
                 greenPass: 0.5,
@@ -56,11 +83,14 @@ export default class Presets
                 fogColor: "#13222c",
             },
             {
-                backgroundColorA: '#2c0304',
-                backgroundColorB: '#ff0000',
-                robotColor: '#ff0000',
+                backgroundColorA: '#720001',
+                backgroundColorB: '#720001',
+                robotColor: '#c8ff00',
                 robotRoughness: 0.2,
                 robotMetalness: 1,
+                wireframe: false,
+
+                floorColor: '#ffffff',
 
                 redPass: 0.8,
                 greenPass: 0.35,
@@ -72,36 +102,66 @@ export default class Presets
                 pointLightY: 5.0,
                 pointLightZ: 3.5,
 
-                spotLightColor: '#ff0000',
+                spotLightColor: '#ff0042',
                 spotLightIntensity: 200,
-                spotLightDecay: 2,
-                // spotLightY: 5.5,
+                spotLightDecay: 1.8,
+                spotLightY: 5.5,
                 spotLightZ: 8.5,
-                fogColor: "#ff0000"
+                fogColor: "#720001"
             },
             {
-                backgroundColorA: '#df7e00',
-                backgroundColorB: '#ff0000',
-                robotColor: '#ff0000',
-                robotRoughness: 1,
-                robotMetalness: 0,
+                backgroundColorA: '#ffffff',
+                backgroundColorB: '#ffffff',
+                robotColor: '#ffffff',
+                robotRoughness: 0.1,
+                robotMetalness: 1,
+                wireframe: false,
+
+                floorColor: '#ffffff',
 
                 redPass: 0.8,
                 greenPass: 0.35,
                 bluePass: 0.5,
 
-                pointLightColor: '#ff0000',
+                pointLightColor: '#ffffff',
                 pointLightIntensity: 50,
                 pointLightDecay: 2.5,
                 pointLightY: 5.0,
                 pointLightZ: 3.5,
 
-                spotLightColor: '#ff0000',
-                spotLightIntensity: 200,
+                spotLightColor: '#ffffff',
+                spotLightIntensity: 80,
                 spotLightDecay: 2,
-                // spotLightY: 5.5,
+                spotLightY: 5.5,
                 spotLightZ: 8.5,
-                fogColor: "#ff0000"
+                fogColor: "#ffffff"
+            },
+            {
+                backgroundColorA: '#000000',
+                backgroundColorB: '#000000',
+                robotColor: '#ffb900',
+                robotRoughness: 0.1,
+                robotMetalness: 1,
+                wireframe: true,
+
+                floorColor: '#ffffff',
+
+                redPass: 0.8,
+                greenPass: 0.35,
+                bluePass: 0.5,
+
+                pointLightColor: '#ffffff',
+                pointLightIntensity: 100,
+                pointLightDecay: 2.5,
+                pointLightY: 2.8,
+                pointLightZ: -1.7,
+
+                spotLightColor: '#ffb900',
+                spotLightIntensity: 300,
+                spotLightDecay: 2.8,
+                spotLightY: 5.5,
+                spotLightZ: 8.5,
+                fogColor: "#000000"
             },
         ]
 
@@ -119,9 +179,14 @@ export default class Presets
         // this.experience.renderer.postProcess.finalPass.uniforms.blueMultiplier.value = presetItem.bluePass
         
 
+        this.world.mecha.robot.floor.material.color.set(presetItem.floorColor)
+
+
+
         this.world.mecha.material.color.set(presetItem.robotColor)
         this.world.mecha.material.roughness = presetItem.robotRoughness
         this.world.mecha.material.metalness = presetItem.robotMetalness
+        this.world.mecha.material.wireframe = presetItem.wireframe
 
         this.world.lights.pointLight.instance.color.set(presetItem.pointLightColor)
         this.world.lights.pointLight.instance.intensity = presetItem.pointLightIntensity
@@ -132,8 +197,8 @@ export default class Presets
         this.world.lights.spot.instance.color.set(presetItem.spotLightColor)
         this.world.lights.spot.instance.intensity = presetItem.spotLightIntensity
         this.world.lights.spot.instance.decay = presetItem.spotLightDecay
-        // this.world.lights.spot.instance.position.y = presetItem.spotLightLightY
-        // this.world.lights.spot.instance.position.z = presetItem.spotLightLightZ
+        this.world.lights.spot.instance.position.y = presetItem.spotLightY
+        this.world.lights.spot.instance.position.z = presetItem.spotLightZ
         
     }
 }

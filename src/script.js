@@ -1,5 +1,7 @@
-import './style.css'
-// import './three'
+import './style.scss'
+// import './reset.css'
+// import './Ui'
+
 
 import Experience from './Experience/Experience'
 

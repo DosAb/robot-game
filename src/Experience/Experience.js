@@ -4,12 +4,12 @@ import Time from './Utils/Time.js'
 import Sizes from './Utils/Sizes.js'
 import Stats from './Utils/Stats.js'
 
+import Keyboard from './Keyboard/Keyboard.js'
 import Resources from './Resources.js'
 import Renderer from './Renderer.js'
 import Camera from './Camera.js'
 import World from './World.js'
 import Presets from './Presets.js'
-
 import assets from './assets.js'
 
 
@@ -34,6 +34,7 @@ export default class Experience
 
         this.time = new Time()
         this.sizes = new Sizes()
+        this.setKeyboard()
         this.setConfig()
         this.setStats()
         this.setDebug()
@@ -50,6 +51,11 @@ export default class Experience
         })
 
         this.update()
+    }
+
+    setKeyboard()
+    {
+        this.keyboard = new Keyboard()
     }
 
     setPresets()
@@ -140,7 +146,7 @@ export default class Experience
 
     resize()
     {
-        console.log(this.renderer.instance.info.render.triangles)
+        // console.log(this.renderer.instance.info.render.triangles)
         // Config
         const boundings = this.targetElement.getBoundingClientRect()
         this.config.width = boundings.width

@@ -21,9 +21,9 @@ void main()
     //RGB shift
 
 
-    float red = texture2D(tDiffuse, uv + 0.001).r;
+    float red = texture2D(tDiffuse, uv + 0.002).r;
     float green = texture2D(tDiffuse, uv).g;
-    float blue = texture2D(tDiffuse, uv - 0.001 ).b;
+    float blue = texture2D(tDiffuse, uv - 0.002).b;
     
     // vec3 color = vec3(red * redMultiplier, green * greenMultiplier, blue * blueMultiplier);
     vec3 color = vec3(red, green, blue);

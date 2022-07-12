@@ -21,14 +21,18 @@ export default class Robot
         this.scene = this.experience.scene
         this.time = this.experience.time
 
-        this.debugFolder = this.debug.addFolder({
-            title: 'mecha',
-            expanded: false,
-        })
+        // Debug
+        if(this.debug)
+        {
+            this.debugFolder = this.debug.addFolder({
+                title: 'mecha',
+                expanded: false,
+            })
+        }
+
        
         this.keyPressed = {}
 
-        // Debug
         this.setKeyboard()
         this.setMaterial()
         this.setVideos()
@@ -121,38 +125,41 @@ export default class Robot
 
         this.basicMaterial = new THREE.MeshBasicMaterial()
 
-        const debugFolder = this.debugFolder.addFolder({
-            title: 'robotColor',
-            expanded: false,
-        })
+        if(this.debug){
+            const debugFolder = this.debugFolder.addFolder({
+                title: 'robotColor',
+                expanded: false,
+            })
+    
+            debugFolder
+            .addInput(
+                this,
+                'color',
+                { view: 'color' }
+            )
+            .on('change', () =>
+            {
+                this.material.color.set(this.color)
+            })
+            debugFolder
+            .addInput(
+                this.material,
+                'roughness',
+                { min: 0, max: 1}
+            )
+            debugFolder
+            .addInput(
+                this.material,
+                'metalness',
+                { min: 0, max: 1}
+            )
+            debugFolder
+            .addInput(
+                this.material,
+                'wireframe',
+            )
+        }
 
-        debugFolder
-        .addInput(
-            this,
-            'color',
-            { view: 'color' }
-        )
-        .on('change', () =>
-        {
-            this.material.color.set(this.color)
-        })
-        debugFolder
-        .addInput(
-            this.material,
-            'roughness',
-            { min: 0, max: 1}
-        )
-        debugFolder
-        .addInput(
-            this.material,
-            'metalness',
-            { min: 0, max: 1}
-        )
-        debugFolder
-        .addInput(
-            this.material,
-            'wireframe',
-        )
 
     }
 
@@ -449,7 +456,7 @@ export default class Robot
         }
 
         this.robot.floor.position.z = -this.robot.bodies.position % 240
-        this.floor.clone.position.z = -this.robot.bodies.position % 240 - 240 
+        this.floor.clone.position.z = -this.robot.bodies.position % 240 - 240
 
 
 
@@ -491,7 +498,7 @@ export default class Robot
 
     setKeyboard()
     {
-        this.keyboard = new Keyboard()
+        this.keyboard = this.experience.keyboard
 
         this.keyboard.on('pressed', (_name) =>
         {

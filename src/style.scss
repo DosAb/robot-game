@@ -6,7 +6,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Playfair+Display&display=swap');
 
-
 html,
 body
 {
@@ -26,12 +25,22 @@ body
     /* cursor: grab; */
 }
 
+.videos-container{
+    // top: -300px;
+    // position: relative;
+    /* display: none; */
+    visibility: hidden;
+    // height: 100px;
+}
+
 video{
     /* position: relative; */
-    width: 400px;
-    height: 400px;
+    width: 4px;
+    height: 4px;
     visibility: hidden;
     /* display: none; */
     /* z-index: 1; */
 }
+
+
 

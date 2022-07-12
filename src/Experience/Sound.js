@@ -1,5 +1,5 @@
 import {Howl, Howler} from 'howler';
-import Keyboard from "./Keyboard/Keyboard"
+import Experience from './Experience.js'
 import sound from '../../static/assets/robotWalk.mp3'
 import soundRotate from '../../static/assets/robotRotate.mp3'
 import shootSound from '../../static/assets/shoot.mp3'
@@ -8,6 +8,7 @@ export default class Sound
 {
     constructor()
     {   
+        this.keyboard = new Experience().keyboard
         this.sfx = {
             moveForward: new Howl({
                 src: sound,
@@ -28,7 +29,6 @@ export default class Sound
 
     setKeyboard()
     {
-        this.keyboard = new Keyboard()
 
         this.keyboard.on('pressed', (_name) =>{
             switch (_name) {

@@ -98,29 +98,32 @@ export default class renderer
             fragmentShader: finalPassFragmentShader
         })
 
-        this.debugFolder
-            .addInput(
-                this.postProcess.finalPass.uniforms.redMultiplier,
-                'value',
-                {label: 'redMultiplier', min: 0, max: 5}
-            )
-        this.debugFolder
-            .addInput(
-                this.postProcess.finalPass.uniforms.redMultiplier,
-                'value',
-                {label: 'greenMultiplier', min: 0, max: 5}
-            )
-        this.debugFolder
-            .addInput(
-                this.postProcess.finalPass.uniforms.redMultiplier,
-                'value',
-                {label: 'blueMultiplier', min: 0, max: 5}
-            )
+        if(this.debug)
+        {
             this.debugFolder
-            .addInput(
-                this,
-                'usePostprocess',
-            )
+                .addInput(
+                    this.postProcess.finalPass.uniforms.redMultiplier,
+                    'value',
+                    {label: 'redMultiplier', min: 0, max: 5}
+                )
+            this.debugFolder
+                .addInput(
+                    this.postProcess.finalPass.uniforms.redMultiplier,
+                    'value',
+                    {label: 'greenMultiplier', min: 0, max: 5}
+                )
+            this.debugFolder
+                .addInput(
+                    this.postProcess.finalPass.uniforms.redMultiplier,
+                    'value',
+                    {label: 'blueMultiplier', min: 0, max: 5}
+                )
+                this.debugFolder
+                .addInput(
+                    this,
+                    'usePostprocess',
+                )
+        }
 
         /**
          * Effect composer

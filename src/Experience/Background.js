@@ -13,10 +13,13 @@ export default class Background
         this.debug = this.experience.debug
         this.scene = this.experience.scene
 
-        this.debugFolder = this.debug.addFolder({
-            title: 'background',
-            expanded: false
-        })
+        if(this.debug)
+        {
+            this.debugFolder = this.debug.addFolder({
+                title: 'background',
+                expanded: false
+            })
+        }
 
         this.setGeometry()
         this.setMaterila()
@@ -45,36 +48,40 @@ export default class Background
             fragmentShader: fragmentShader
         })
 
-        this.debugFolder
-            .addInput(
-                this,
-                'colorA',
-                {view: 'color'}
-            )
-            .on('change', () =>{
-                this.material.uniforms.uColorA.value.set(this.colorA)
-            })
-        this.debugFolder
-            .addInput(
-                this,
-                'colorB',
-                {view: 'color'}
-            )
-            .on('change', () =>{
-                this.material.uniforms.uColorB.value.set(this.colorB)
-            })
-        this.debugFolder
-            .addInput(
-                this.material.uniforms.uOffest,
-                'value',
-                {min: -1, max: 1}
-            )
-        this.debugFolder
-            .addInput(
-                this.material.uniforms.uMultiplier,
-                'value',
-                {min: 0, max: 10}
-            )
+        if(this.debug)
+        {
+            this.debugFolder
+                .addInput(
+                    this,
+                    'colorA',
+                    {view: 'color'}
+                )
+                .on('change', () =>{
+                    this.material.uniforms.uColorA.value.set(this.colorA)
+                })
+            this.debugFolder
+                .addInput(
+                    this,
+                    'colorB',
+                    {view: 'color'}
+                )
+                .on('change', () =>{
+                    this.material.uniforms.uColorB.value.set(this.colorB)
+                })
+            this.debugFolder
+                .addInput(
+                    this.material.uniforms.uOffest,
+                    'value',
+                    {min: -1, max: 1}
+                )
+            this.debugFolder
+                .addInput(
+                    this.material.uniforms.uMultiplier,
+                    'value',
+                    {min: 0, max: 10}
+                )
+        }
+            
     }
     setMesh()
     {

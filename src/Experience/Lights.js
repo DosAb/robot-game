@@ -9,10 +9,13 @@ export default class Lights
         this.debug = this.experience.debug
 
         // Debug
-        this.debugFolder = this.debug.addFolder({
-            title: 'lights',
-            expanded: false,
-        })
+        if(this.debug)
+        {
+            this.debugFolder = this.debug.addFolder({
+                title: 'lights',
+                expanded: false,
+            })
+        }
 
         this.setPointLight()
         this.setSpotLight()
@@ -33,44 +36,46 @@ export default class Lights
         this.scene.add(this.pointLight.instance)
 
         // Debug
-        const debugFolder = this.debugFolder.addFolder({
-            title: 'pointLight',
-            expanded: false,
-        })
-
-        debugFolder
-            .addInput(
-                this.pointLight,
-                'color',
-                { view: 'color' }
-            )
-            .on('change', () =>
-            {
-                this.pointLight.instance.color.set(this.pointLight.color)
+        if(this.debug){
+            const debugFolder = this.debugFolder.addFolder({
+                title: 'pointLight',
+                expanded: false,
             })
-        debugFolder.addInput(
-            this.pointLight.instance,
-            'intensity',
-            {min: 0, max: 100}
-        )
-        debugFolder.addInput(
-            this.pointLight.instance,
-            'decay',
-            {min: 0, max: 10}
-        )
-        debugFolder
-        .addInput(
-            this.pointLight.instance.position,
-            'y',
-            { min: - 10, max: 10 }
-        )
-
-        debugFolder
+    
+            debugFolder
+                .addInput(
+                    this.pointLight,
+                    'color',
+                    { view: 'color' }
+                )
+                .on('change', () =>
+                {
+                    this.pointLight.instance.color.set(this.pointLight.color)
+                })
+            debugFolder.addInput(
+                this.pointLight.instance,
+                'intensity',
+                {min: 0, max: 100}
+            )
+            debugFolder.addInput(
+                this.pointLight.instance,
+                'decay',
+                {min: 0, max: 10}
+            )
+            debugFolder
             .addInput(
                 this.pointLight.instance.position,
-                'z',
-                { min: - 20, max: 20 }
+                'y',
+                { min: - 10, max: 10 }
             )
+    
+            debugFolder
+                .addInput(
+                    this.pointLight.instance.position,
+                    'z',
+                    { min: - 20, max: 20 }
+                )
+        }
     }
 
     setSpotLight()
@@ -90,6 +95,8 @@ export default class Lights
         this.spot.helper.visible = false
         this.scene.add(this.spot.helper)
 
+        if(this.debug){
+            
         const debugFolder = this.debugFolder.addFolder({
             title: 'spotLight',
             expanded: false,
@@ -127,6 +134,8 @@ export default class Lights
                 'z',
                 { min: - 20, max: 20 }
             )
+        }
+
 
         // this.scene.add(this.spot.instance)
     }

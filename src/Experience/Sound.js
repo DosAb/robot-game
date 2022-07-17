@@ -12,7 +12,7 @@ export default class Sound
         this.sfx = {
             moveForward: new Howl({
                 src: sound,
-                volume: 0.3
+                volume: 0.1
             }),
             rotate: new Howl({
                 src: soundRotate,

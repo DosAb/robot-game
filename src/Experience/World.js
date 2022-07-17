@@ -33,7 +33,7 @@ export default class World
     {
         this.mecha = new Robot()
         this.mecha.robot.body.add(this.lights.spot.instance)
-        this.mecha.robot.body.add(this.lights.pointLight.instance)
+        // this.mecha.robot.body.add(this.lights.pointLight.instance)
     }
 
     setLights()
@@ -57,9 +57,6 @@ export default class World
         if(this.mecha){
             this.mecha.update()
         }
-        // if(this.lights){
-        //     this.lights.spot.instance.position.y = Math.abs(Math.sin(this.time.elapsed * 0.0005) * 3)
-        // }
         if(this.sound){
             this.sound.update()
         }

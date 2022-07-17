@@ -117,6 +117,7 @@ export default class Robot
     setMaterial()
     {
         this.color = '#ffffff'
+        // this.material = new THREE.MeshNormalMaterial()
         this.material = new THREE.MeshStandardMaterial()
         this.material.color = new THREE.Color(this.color)
         this.material.roughness = 0.55
@@ -231,9 +232,10 @@ export default class Robot
                     if(_child.name.match('Plane0'))
                     {
                         this.countPlanes++
-                        _child.material = this.videosArray[this.countPlanes % 5].material
-                        _child.rotation.x = Math.PI / 2
-                        this.robot.planeArray.push( _child)
+                        _child.material = this.basicMaterial    
+                        // _child.material = this.videosArray[this.countPlanes % 5].material
+                        // _child.rotation.x = Math.PI / 2
+                        // this.robot.planeArray.push( _child)
 
 
                     }
@@ -254,7 +256,7 @@ export default class Robot
         this.floor = {}
 
         this.robot.floor = this.robot.model.getObjectByName('floor')
-        this.robot.floor.material = new THREE.MeshPhongMaterial({})
+        this.robot.floor.material = new THREE.MeshPhongMaterial()
         this.floor.clone = this.robot.floor.clone()
         this.floor.clone.position.y -= 2
         this.scene.add(this.floor.clone)

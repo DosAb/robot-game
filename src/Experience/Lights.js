@@ -17,7 +17,7 @@ export default class Lights
             })
         }
 
-        this.setPointLight()
+        // this.setPointLight()
         this.setSpotLight()
     }
 
@@ -33,7 +33,7 @@ export default class Lights
         this.pointLight.instance.position.z = 3.5
         // this.pointLight.instance.castShadow = true
         // this.pointLight.instance.shadow.mapSize.set(1024, 1024)
-        this.scene.add(this.pointLight.instance)
+        // this.scene.add(this.pointLight.instance)
 
         // Debug
         if(this.debug){
@@ -81,7 +81,7 @@ export default class Lights
     setSpotLight()
     {
         this.spot = {}
-        this.spot.color = '#c2a011'
+        this.spot.color = '#8401ac'
 
         // Instance
         this.spot.instance = new THREE.SpotLight(0xffffff, 200, 0, 1, 1, 2)
@@ -93,7 +93,7 @@ export default class Lights
 
         this.spot.helper = new THREE.SpotLightHelper(this.spot.instance)
         this.spot.helper.visible = false
-        this.scene.add(this.spot.helper)
+        // this.scene.add(this.spot.helper)
 
         if(this.debug){
             

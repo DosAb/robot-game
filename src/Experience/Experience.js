@@ -37,7 +37,7 @@ export default class Experience
         this.setKeyboard()
         this.setConfig()
         this.setStats()
-        this.setDebug()
+        // this.setDebug()
         this.setScene()
         this.setCamera()
         this.setRenderer()

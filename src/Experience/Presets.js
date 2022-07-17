@@ -102,7 +102,7 @@ export default class Presets
                 pointLightY: 5.0,
                 pointLightZ: 3.5,
 
-                spotLightColor: '#ff0042',
+                spotLightColor: '#ff0143',
                 spotLightIntensity: 200,
                 spotLightDecay: 1.8,
                 spotLightY: 5.5,
@@ -158,9 +158,9 @@ export default class Presets
 
                 spotLightColor: '#ffb900',
                 spotLightIntensity: 300,
-                spotLightDecay: 2.8,
-                spotLightY: 5.5,
-                spotLightZ: 8.5,
+                spotLightDecay: 1.5,
+                spotLightY: 1.5,
+                spotLightZ: 5.5,
                 fogColor: "#000000"
             },
         ]
@@ -188,11 +188,11 @@ export default class Presets
         this.world.mecha.material.metalness = presetItem.robotMetalness
         this.world.mecha.material.wireframe = presetItem.wireframe
 
-        this.world.lights.pointLight.instance.color.set(presetItem.pointLightColor)
-        this.world.lights.pointLight.instance.intensity = presetItem.pointLightIntensity
-        this.world.lights.pointLight.instance.decay = presetItem.pointLightDecay
-        this.world.lights.pointLight.instance.position.y = presetItem.pointLightY
-        this.world.lights.pointLight.instance.position.z = presetItem.pointLightZ
+        // this.world.lights.pointLight.instance.color.set(presetItem.pointLightColor)
+        // this.world.lights.pointLight.instance.intensity = presetItem.pointLightIntensity
+        // this.world.lights.pointLight.instance.decay = presetItem.pointLightDecay
+        // this.world.lights.pointLight.instance.position.y = presetItem.pointLightY
+        // this.world.lights.pointLight.instance.position.z = presetItem.pointLightZ
 
         this.world.lights.spot.instance.color.set(presetItem.spotLightColor)
         this.world.lights.spot.instance.intensity = presetItem.spotLightIntensity

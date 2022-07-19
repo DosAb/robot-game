@@ -46,7 +46,7 @@ export default class renderer
             precision: 'lowp',
             premultipliedAlpha: false,
             stencil: false,
-            depth: false,
+            // depth: false,
         })
         this.instance.sortObjects = false
 
